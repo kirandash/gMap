@@ -1,6 +1,10 @@
 //Global map variable
 var map;
 
+//Get the location to display the coordinates
+var lat = document.getElementById('latcoords');
+var lng = document.getElementById('loncoords');
+
 //Style Elements (Use snazzymaps.com)
 /*var mapStyle = [
     {
@@ -112,12 +116,81 @@ function loadMap() {
 
     //Create the map
     map = new google.maps.Map(mapId,mapOptions);
+
+    //Update lat lng after map is created
+    updateCurrentLatLng(map.getCenter());
+
+    //Update url once map is loaded
+    updateUrlLocation(map.getCenter(), map.getZoom());
+
+    //Call map event listeners function so that all events are bind to map after it is created
+    mapEventListeners();
       
+}
+
+function mapEventListeners(){
+    
+    //Mousemove Update the coordinates
+    var mouseMoveChanged = google.maps.event.addListener(map, 'mousemove', 
+        function(event){
+            //Update the coordinates
+            updateCurrentLatLng(event.latLng);
+            //The event contains lat and lng data
+        }
+    );
+
+    //Right click control to zoom in the map
+    var mouseDoubleClick = google.maps.event.addListener(map, 'rightclick', 
+        function(event){
+            //Keep zoom loop between 11 to 16
+            var z = map.getZoom() + 1;
+            if(z < 16) {
+                map.setZoom(z);
+            }else{
+                map.setZoom(11);
+            }
+            //On right click set the current position to center
+            map.setCenter(event.latLng);
+        }
+    );
+
+    //Wait for map to load
+    var listenerIdle = google.maps.event.addListenerOnce(map, 'idle', 
+        function(){
+            //alert('Map is ready!');
+        }
+    );
+
+    //Drag End
+    var listenerDragEnd = google.maps.event.addListener(map, 'dragend',
+        function() {
+            updateUrlLocation(map.getCenter(), map.getZoom());
+        }
+    );
+
+    //Zoom Changed
+    var listenerZoomChanged = google.maps.event.addListener(map, 'zoom_changed',
+        function() {
+            updateUrlLocation(map.getCenter(), map.getZoom());
+        }
+    );
+}
+
+//Update the position of mouse in lattitued and longitude
+function updateCurrentLatLng(latLng){
+    //Update the coordinates
+    lat.innerHTML = latLng.lat();
+    lng.innerHTML = latLng.lng();
+}
+
+//Update the URL with the map center and zoom - So that user can take the url and provide to someone else.
+function updateUrlLocation(center, zoom){
+    var lat = center.lat();
+    var lng = center.lat();
+    var url = '?lat='+lat+'&lon='+lng+'&zoom='+zoom;
+    //Set the URL - using html5 pushshate - Note that objects can't be pushed to pushState
+    window.history.pushState({lat:lat,lng:lng,zoom:zoom}, 'map center', url);
 }
 
 //Load the map
 google.maps.event.addDomListener(window, 'load', loadMap());
-       
-
-
-
