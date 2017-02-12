@@ -120,6 +120,12 @@ function loadMap() {
     //Marker Creation
     var newMarker = this.addMarker();
 
+    //Info Window function
+    addInfoWindow(newMarker);
+
+    //Click on a marker by default to show an info window by default
+    google.maps.event.trigger(newMarker, 'click');
+
     /*
     //Update lat lng after map is created
     updateCurrentLatLng(map.getCenter());
@@ -177,6 +183,38 @@ function addMarker(){
     marker.setVisible(true);//show or hide the icons
 
     return marker;
+}
+
+function addInfoWindow(marker) {
+
+    //Content string 
+    var contentString = '<div class="infowindowcontent">'+
+        '<div class="row">' +
+        '<p class="total greenbk">78.3%</p>'+
+        '<p class="location">New York NY</p>'+
+        '<p class="code">JFK</p>'+
+        '</div>'+
+        '<div class="data">'+
+        '<p class="tagbelow">Avg On-Time</p>'+
+        '<p class="label">Arrivals</p>'+
+        '<p class="details">76% (8590)</p>' +
+        '<p class="label">Departures</p>'+
+        '<p class="details">80.5% (8059)</p>' +        
+        '<p class="coords">40.641311, -73.561589</p>' +
+        '</div>'+
+        '</div>';
+
+    var infoWindow = new google.maps.InfoWindow({
+        content: contentString,
+        disableAutoPan: false, //If set to true it will pan the map and take full view
+        maxWidth: 300,
+        zindex: 1
+    });
+
+    //Click event Listener
+    google.maps.event.addListener(marker, 'click', function(e){
+        infoWindow.open(map, marker);
+    });
 }
 
 /*
