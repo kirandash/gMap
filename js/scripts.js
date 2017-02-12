@@ -117,6 +117,10 @@ function loadMap() {
     //Create the map
     map = new google.maps.Map(mapId,mapOptions);
 
+    //Marker Creation
+    var newMarker = this.addMarker();
+
+    /*
     //Update lat lng after map is created
     updateCurrentLatLng(map.getCenter());
 
@@ -124,10 +128,33 @@ function loadMap() {
     updateUrlLocation(map.getCenter(), map.getZoom());
 
     //Call map event listeners function so that all events are bind to map after it is created
-    mapEventListeners();
+    mapEventListeners();*/
       
 }
 
+//Add a marker to the map
+function addMarker(){
+    //create the marker (#markeroptions)
+    var marker = new google.maps.Marker({
+        //Postion of marker
+        position: new google.maps.LatLng(25.767,-80.1363),
+        //map: map, 
+        icon: {
+            url: 'img/airplane-green.png',
+            size: new google.maps.Size(32,32),//width and height
+            origin: new google.maps.Point(0,0),
+            anchor: new google.maps.Point(16,32), //horizontal center and vertical bottom
+            scaledSize: new google.maps.Size(32,32)//scaled to this size
+        }
+    });
+
+    marker.setMap(map); //displayin marker either through map option or using setMap
+    marker.setVisible(true);//show or hide the icons
+
+    return marker;
+}
+
+/*
 function mapEventListeners(){
     
     //Mousemove Update the coordinates
@@ -191,6 +218,7 @@ function updateUrlLocation(center, zoom){
     //Set the URL - using html5 pushshate - Note that objects can't be pushed to pushState
     window.history.pushState({lat:lat,lng:lng,zoom:zoom}, 'map center', url);
 }
+*/
 
 //Load the map
 google.maps.event.addDomListener(window, 'load', loadMap());
