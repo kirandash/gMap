@@ -2,7 +2,7 @@
 var map;
 
 //Style Elements (Use snazzymaps.com)
-var mapStyle = [
+/*var mapStyle = [
     {
         //If featuretype is not defined this style will apply to all features on map
         'stylers':[
@@ -11,7 +11,7 @@ var mapStyle = [
         ]
     },
     {
-        /* This style for all features but specific elements - labels text */
+        // This style for all features but specific elements - labels text
         'elementType':'labels.text.stroke',
         'stylers':[
             {'visibility':'on'}
@@ -22,13 +22,13 @@ var mapStyle = [
         'elementType':'geometry',
         'stylers':[
             {'visibility':'simplified'}
-            /* If turned on all the secondary roads will be displayed */
+            // If turned on all the secondary roads will be displayed
         ]
     },
     {
         'featureType':'water',
         'stylers':[
-            /* Visibility should be on to overwrite the global stylers */
+            //Visibility should be on to overwrite the global stylers
             {'visibility':'on'},
             {'saturation':50},
             {'gamma':0},
@@ -42,7 +42,7 @@ var mapStyle = [
             {'color':'#e2e2e2'}
         ]
     }
-];
+];*/
 
 //Function run on DOM load
 function loadMap() {
@@ -51,7 +51,7 @@ function loadMap() {
     var mapOptions = {
 
         //Zoom on load
-        zoom: 18,
+        zoom: 5,
 
         //Map center
         center: new google.maps.LatLng(25.767,-80.1363),
@@ -104,7 +104,7 @@ function loadMap() {
         },
 
         //Set the map style
-        styles: mapStyle
+        styles: cladmeMapStyle
     };
 
     //Get the id of the map container div
