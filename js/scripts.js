@@ -60,7 +60,7 @@ function loadMap() {
         zoom: 5,
 
         //Map center
-        center: new google.maps.LatLng(40.6413111,-73.77813909),
+        center: new google.maps.LatLng(39.828127,-98.579404),
 
         //Limit Min/Max Zoom
         /*minZoom: 10,
@@ -129,11 +129,33 @@ function loadMap() {
         //Total Flights
         airport.totalflights = (airport.aop + airport.dop);
 
-        //Set the icon color
-        airport.icon = 'green';
+        //Scale
+        if(airport.totalflights > 10000) {
+            airport.iconsize = new google.maps.Size(48,48);
+        }
+        else if((1000 <= airport.totalflights) && (airport.totalflights <= 10000)) {
+            airport.iconsize = new google.maps.Size(32,32);
+        }
+        else if(airport.totalflights < 1000) {
+            airport.iconsize = new google.maps.Size(16,16);
+        }
+
+        //Set the icon based on total percentage
+        if(airport.totalper >= 80) {
+            airport.icon = 'green';            
+        } 
+        else if((70 <= airport.totalper) && (airport.totalper < 80)) {
+            airport.icon = 'yellow';            
+        } 
+        else if((60 <= airport.totalper) && (airport.totalper < 70)) {
+            airport.icon = 'orange';
+        }
+        else {
+            airport.icon = 'red';
+        }
 
         //Set the icon size
-        airport.iconsize = new google.maps.Size(32,32);
+        //airport.iconsize = new google.maps.Size(32,32);
 
         //Marker Creation
         var newMarker = this.addMarker(airport);
@@ -169,11 +191,13 @@ function addMarker(airport){
         position: new google.maps.LatLng(airport.lat,airport.lng),
         //map: map, 
         icon: {
-            url: 'img/airplane-green.png',
-            size: new google.maps.Size(32,32),//width and height
+            url: 'img/airplane-'+ airport.icon +'.png',
+            //size: new google.maps.Size(32,32),//width and height
+            size: airport.iconsize,
             origin: new google.maps.Point(0,0),
             anchor: new google.maps.Point(16,32), //horizontal center and vertical bottom
-            scaledSize: new google.maps.Size(32,32)//scaled to this size
+            //scaledSize: new google.maps.Size(32,32)//scaled to this size
+            scaledSize: airport.iconsize,
         },
 
         //Set the animation (Bounce or Drop)
